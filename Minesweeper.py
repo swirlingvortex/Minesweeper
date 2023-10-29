@@ -100,17 +100,23 @@ def expertMode():
     yCoord = int(input("Enter the x coordinate of the square you would like to perform an action on.\nThe number should be more than or equal to 0, and less than or equal to 15. \nMake sure to enter ONE INTEGER ONLY. \nYou CANNOT change the coordinate after you input it: "))
     while yCoord < 0 or yCoord > xGridLength:
       yCoord = int(input("Enter the x coordinate of the square you would like to perform an action on.\nThe number should be more than or equal to 0, and less than or equal to 15. \nMake sure to enter ONE INTEGER ONLY. \nYou CANNOT change the coordinate after you input it: "))
+    #takes in the action the player would like to do, quit the program, place a flag, or reveal a square.
+    action = input("Which action would you like to do? Enter q to quit the game, enter f to plant a flag, enter c to click on a square: ")      
     while action != 'q' and action != 'f' and action != 'c' and action != 's':
       action = input("Which action would you like to do? Enter q to quit the game, enter f to plant a flag, enter c to click on a square: ")
     if action == 'q':
       exit()
     elif action == 'f':
-      if playerField[yCoord][xCoord] != 'u':
-        continue
-      else:
+      if playerField[yCoord][xCoord] == 'f':
+        playerField == 'u'
+      elif playerField[yCoord][xCoord] == 'u':
         playerField[yCoord][xCoord] = 'f'
+      else:
+          continue
     elif action == 'c':
-      if gameField[yCoord][xCoord] == 'm':
+      if gameField[yCoord][xCoord] == 'f':
+          continue
+      elif gameField[yCoord][xCoord] == 'm':
         print("You hit a mine! Game Over!")
         exit()
       else:
