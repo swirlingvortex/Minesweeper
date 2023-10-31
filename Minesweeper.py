@@ -129,14 +129,13 @@ def expertMode():
 #game should end when all squares without mines are revealed
 #so, when they click a square, if the square is safe the player board should copy the value from the field board and then the field board should change its value to r, when tiles - minesToCreate = amount of squares revealed the player should win
 def easyMode():
-  xGridLength = 8
-  yGridLength = 8
-  minesToCreate = 16
+  xGridLength = 10
+  yGridLength = 10
+  minesToCreate = 25
   gameField = [[0 for x in range(xGridLength)] for y in range(yGridLength)]
   playerField = [['u'for x in range(xGridLength)] for y in range(yGridLength)]
-  #CHANGE THESE TO MAKE THEM CORRECT FOR AN 8X8 GRID
-  xMiddle = [11,12,13,14,15,16,17,18]
-  yMiddle = [6,7,8,9]
+  xMiddle = [3,4,5,6]
+  yMiddle = [3,4,5,6]
   print(len(gameField),len(gameField[0]),'hi')
   xGridLength -= 1
   yGridLength -= 1
@@ -166,7 +165,7 @@ def easyMode():
   for i in xMiddle:
     for j in yMiddle:
       playerField[j][i] = gameField[j][i]
-  print("   " + "0    " + "1    " + "2    " + "3    " + "4    " + "5    " + "6    " + "7    " + "8    " + "9   " + "10   " + "11   " + "12   " + "13   " + "14   " + "15   " + "16   " + "17   " + "18   " + "19   " + "20   " + "21   "+ "22   "+ "23   "+ "24   "+ "25   "+ "26   "+ "27   "+ "28   "+ "29   ")
+  print("   " + "0    " + "1    " + "2    " + "3    " + "4    " + "5    " + "6    " + "7    " + "8    " + "9")
   for i in range(len(playerField)):
     print("\n" + str(i) + str(playerField[i]))
   revealed = 0
@@ -188,21 +187,32 @@ def easyMode():
       exit()
     elif action == 'f':
       if playerField[yCoord][xCoord] == 'f':
-        playerField == 'u'
+        playerField[yCoord][xCoord] = 'u'
       elif playerField[yCoord][xCoord] == 'u':
         playerField[yCoord][xCoord] = 'f'
       else:
           continue
     elif action == 'c':
-      if gameField[yCoord][xCoord] == 'f':
+      if playerField[yCoord][xCoord] == 'f':
           continue
       elif gameField[yCoord][xCoord] == 'm':
         print("You hit a mine! Game Over!")
+        print("The real board looked like")
+        for i in gameField:
+          print(i)
+        print("You got this far: ")
+        for i in playerField:
+          print(i)
         exit()
       else:
         playerField[yCoord][xCoord] = gameField[yCoord][xCoord]
         revealed += 1
-    print("   " + "0    " + "1    " + "2    " + "3    " + "4    " + "5    " + "6    " + "7    " + "8    " + "9   " + "10   " + "11   " + "12   " + "13   " + "14   " + "15   " + "16   " + "17   " + "18   " + "19   " + "20   " + "21   "+ "22   "+ "23   "+ "24   "+ "25   "+ "26   "+ "27   "+ "28   "+ "29   ")
+    print("   " + "0    " + "1    " + "2    " + "3    " + "4    " + "5    " + "6    " + "7    " + "8    " + "9")
     for i in range(len(playerField)):
       print("\n" + str(i) + str(playerField[i]))
-expertMode()
+mode = input('Which mode would you like to play? Enter either "easy" or "expert".')
+while mode != "easy" and mode != "expert":
+  mode = input('Which mode would you like to play? Enter either "easy" or "expert".')
+if mode == 'easy':
+  easyMode()
+mode = input('Which mode would you like to play? Enter either "easy" or "expert".  ')
