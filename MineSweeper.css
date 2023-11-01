@@ -1,3 +1,23 @@
-.xCoordinates {
-    letter-spacing:10px;
+body {
+    margin: 0;
+}
+
+:root {
+    --cell-size: 84px;
+}
+
+.board {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    grid-template-columns: repeat(10,auto);
+}
+
+.cell {
+    width: var(--cell-size);
+    height: var(--cell-size);
+    background-color: rgb(10, 177, 7);
+    border: 1px solid white;
 }
