@@ -91,7 +91,7 @@ def expertMode():
     print("\n" + str(i) + str(playerField[i]))
   revealed = 0
   action = ''
-  while (revealed < (((xGridLength+1) * (yGridLength+1))-minesToCreate)):
+  while (revealed < ((((xGridLength+1) * (yGridLength+1))-minesToCreate)-(yMiddle*xMiddle))):
     xCoord = int(input("Enter the x coordinate of the square you would like to perform an action on.\nThe number should be more than or equal to 0, and less than or equal to 29. Make sure to enter ONE INTEGER ONLY You CANNOT change the coordinate after you input it: "))
     while xCoord < 0 or xCoord > xGridLength:
       #takes in the x coordinate, we will use this in the form of field[y][x]
@@ -170,7 +170,7 @@ def easyMode():
     print("\n" + str(i) + str(playerField[i]))
   revealed = 0
   action = ''
-  while (revealed < (((xGridLength+1) * (yGridLength+1))-minesToCreate)):
+  while (revealed < ((((xGridLength+1) * (yGridLength+1))-minesToCreate)-(yMiddle*xMiddle))):
     xCoord = int(input("Enter the x coordinate of the square you would like to perform an action on.\nThe number should be more than or equal to 0, and less than or equal to 29. Make sure to enter ONE INTEGER ONLY You CANNOT change the coordinate after you input it: "))
     while xCoord < 0 or xCoord > xGridLength:
       #takes in the x coordinate, we will use this in the form of field[y][x]
@@ -210,9 +210,98 @@ def easyMode():
     print("   " + "0    " + "1    " + "2    " + "3    " + "4    " + "5    " + "6    " + "7    " + "8    " + "9")
     for i in range(len(playerField)):
       print("\n" + str(i) + str(playerField[i]))
-mode = input('Which mode would you like to play? Enter either "easy" or "expert".')
-while mode != "easy" and mode != "expert":
+def superEasyMode():
+  xGridLength = 7
+  yGridLength = 7
+  minesToCreate = 12
+  gameField = [[0 for x in range(xGridLength)] for y in range(yGridLength)]
+  playerField = [['u'for x in range(xGridLength)] for y in range(yGridLength)]
+  xMiddle = [2,3,4]
+  yMiddle = [2,3,4]
+  print(len(gameField),len(gameField[0]),'hi')
+  xGridLength -= 1
+  yGridLength -= 1
+  mines = 0
+  print('\n\n\n\n')
+  for i in gameField:
+    print(i)
+  while mines < minesToCreate:
+    x = random.randint(0, xGridLength)
+    y = random.randint(0, yGridLength)
+    print(x,y)
+    if gameField[y][x] != 'm' and (x not in xMiddle or y not in yMiddle):
+      gameField[y][x] = 'm'
+      mines += 1
+  for i in gameField:
+    print(i)
+  for i in range(len(gameField)):
+    for j in range(len(gameField[i])):
+      if gameField[i][j] == 0:
+        gameField[i][j] = countMines(j,i,gameField,yGridLength,xGridLength)
+  print('\n\n\n\n\n\n\n')
+  for i in gameField:
+    print(i)
+
+  print('\n\n\n\n')
+  
+  for i in xMiddle:
+    for j in yMiddle:
+      playerField[j][i] = gameField[j][i]
+  print("   " + "0    " + "1    " + "2    " + "3    " + "4    " + "5    " + "6")
+  for i in range(len(playerField)):
+    print("\n" + str(i) + str(playerField[i]))
+  revealed = 0
+  action = ''
+  while (revealed < ((((xGridLength+1) * (yGridLength+1))-minesToCreate)-(yMiddle*xMiddle))):
+    xCoord = int(input("Enter the x coordinate of the square you would like to perform an action on.\nThe number should be more than or equal to 0, and less than or equal to 29. Make sure to enter ONE INTEGER ONLY You CANNOT change the coordinate after you input it: "))
+    while xCoord < 0 or xCoord > xGridLength:
+      #takes in the x coordinate, we will use this in the form of field[y][x]
+      xCoord = int(input("Enter the x coordinate of the square you would like to perform an action on.\nThe number should be more than or equal to 0, and less than or equal to 29. Make sure to enter ONE INTEGER ONLY You CANNOT change the coordinate after you input it: "))
+      #takes in the y coordinate, we will use this in the form of field[y][x]
+    yCoord = int(input("Enter the x coordinate of the square you would like to perform an action on.\nThe number should be more than or equal to 0, and less than or equal to 15. \nMake sure to enter ONE INTEGER ONLY. \nYou CANNOT change the coordinate after you input it: "))
+    while yCoord < 0 or yCoord > xGridLength:
+      yCoord = int(input("Enter the x coordinate of the square you would like to perform an action on.\nThe number should be more than or equal to 0, and less than or equal to 15. \nMake sure to enter ONE INTEGER ONLY. \nYou CANNOT change the coordinate after you input it: "))
+    #takes in the action the player would like to do, quit the program, place a flag, or reveal a square.
+    action = input("Which action would you like to do? Enter q to quit the game, enter f to plant a flag, enter c to click on a square: ")      
+    while action != 'q' and action != 'f' and action != 'c' and action != 's':
+      action = input("Which action would you like to do? Enter q to quit the game, enter f to plant a flag, enter c to click on a square: ")
+    if action == 'q':
+      exit()
+    elif action == 'f':
+      if playerField[yCoord][xCoord] == 'f':
+        playerField[yCoord][xCoord] = 'u'
+      elif playerField[yCoord][xCoord] == 'u':
+        playerField[yCoord][xCoord] = 'f'
+      else:
+          continue
+    elif action == 'c':
+      if playerField[yCoord][xCoord] == 'f':
+          continue
+      elif gameField[yCoord][xCoord] == 'm':
+        print("You hit a mine! Game Over!")
+        print("The real board looked like")
+        for i in gameField:
+          print(i)
+        print("You got this far: ")
+        for i in playerField:
+          print(i)
+        print("You revealed", revealed, "squares")
+        exit()
+      else:
+        playerField[yCoord][xCoord] = gameField[yCoord][xCoord]
+        revealed += 1
+    print("0    " + "1    " + "2    " + "3    " + "4    " + "5    " + "6")
+    for i in gameField:
+          print(i)
+    print("   " + "0    " + "1    " + "2    " + "3    " + "4    " + "5    " + "6")
+    for i in range(len(playerField)):
+      print("\n" + str(i) + str(playerField[i]))
+mode = input('Which mode would you like to play? Enter either "super easy", "easy", or "expert".')
+while mode != "easy" and mode != "super easy" and mode != "expert":
   mode = input('Which mode would you like to play? Enter either "easy" or "expert".')
-if mode == 'easy':
+if mode == 'super easy':
+  superEasyMode()
+elif mode == "easy":
   easyMode()
-mode = input('Which mode would you like to play? Enter either "easy" or "expert".  ')
+elif mode == "expert":
+  expertMode()
